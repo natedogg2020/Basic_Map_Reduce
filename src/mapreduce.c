@@ -46,7 +46,23 @@ int main(int argc, char *argv[]) {
 
 	// To do
 	// spawn reducer processes and run 'reducer' executable using exec
-
+	int reducerStatus;
+	int i = 1;
+	pid_t reducerPID;
+	while(i <= nReducers){
+		reducerPID = fork();
+		if(reducerPID < 0){
+			printf("Error: Could not create the %s child process", "reducer");
+		}
+		else if(reducerPID == 0){
+		char *args[] = {"./reducer", NULL};
+        execv(*args, args);
+        printf("Error executing execv()\n");
+        exit(0);	
+    	}
+		i++;
+	}
+	
 	// To do
 	// wait for all children to complete execution
 
