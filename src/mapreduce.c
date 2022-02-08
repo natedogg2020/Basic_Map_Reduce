@@ -36,14 +36,14 @@ int main(int argc, char *argv[]) {
 			char *mapperArgs[] = {"mapper", id,NULL};
 			char *mapperCmd = "mapper";
     		execv(mapperCmd,mapperArgs);
+			printf("Error: Could not create the %d mapper child process",nMappers);
 		}
 	}
 
 	// To do
 	// wait for all children to complete execution
 	int status = 0;
-	while ((pid=waitpid(pid, &status, 0))!=-1){
-
+    while (wait(&status) > 0){
 	};
 
 	// ###### DO NOT REMOVE ######
