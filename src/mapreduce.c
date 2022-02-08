@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 	// To do
 	// wait for all children to complete execution
 	int status = 0;
-    while ((pid=waitpid(pid, &status, 0))!=-1){
+	while ((pid=waitpid(pid, &status, 0))!=-1){
 
 	};
 
