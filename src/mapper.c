@@ -23,11 +23,11 @@ valueList *insertNewValueToList(valueList *root, char *count){
 void freeValueList(valueList *root) {
 	if(root == NULL) return;
 
-	valueList *tempNode = root -> next;;
-	while (tempNode != NULL){
-		free(root);
-		root = tempNode;
-		tempNode = tempNode -> next;
+	valueList *tempNode = NULL;
+	while (root != NULL){
+		tempNode = root;
+		root = root -> next;
+		free(tempNode);
 	}
 }
 
@@ -66,12 +66,12 @@ intermediateDS *insertPairToInterDS(intermediateDS *root, char *word, char *coun
 void freeInterDS(intermediateDS *root) {
 	if(root == NULL) return;
 
-	intermediateDS *tempNode = root -> next;;
-	while (tempNode != NULL){
-		freeValueList(root -> value);
-		free(root);
-		root = tempNode;
-		tempNode = tempNode -> next;
+	intermediateDS *tempNode = NULL;
+	while (root != NULL){
+		tempNode = root;
+		root = root -> next;
+		freeValueList(tempNode -> value);
+		free(tempNode);
 	}
 }
 
@@ -133,5 +133,6 @@ int main(int argc, char *argv[]) {
 	// ###### DO NOT REMOVE ######
 	writeIntermediateDS();
 
+    free(mapOutDir);
 	return 0;
 }
