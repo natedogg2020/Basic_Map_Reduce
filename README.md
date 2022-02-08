@@ -1,5 +1,6 @@
 # Project 1: Basic Map Reduce
 ## Project Purpose
+The purpose of this project is to find the number of occurrences a given word may have within a text document. This action can take a while, but this project uses mapping/reducing methods that splits this task into multiple processes to run. This method increases speed at the cost of memory usage.
 
 ## How to Compile
 The current structure of the Template folder should be maintained. If you want to add extra source(.c)
@@ -31,9 +32,11 @@ out.
 - We assume the maximum size of a file path to be 50 bytes.
 - The chunk size will be at most 1024 bytes as there is a chance that some of the 1024th byte
 in input File is the middle of a word.
+- The application will be ran in a linux environment replicating that used in the CSE Lab Machines
 
 ## Team Members
-Abdul Farah (farah126)
+* Abdul Farah (farah126)
+* Nathaniel McKelvey (mckel042)
 
 ## Contributions
 ### Abdul
@@ -44,3 +47,14 @@ Abdul Farah (farah126)
    - Any assumptions outside this document
    - Team member names and x500
    - Contribution by each member of the team
+
+### Nathaniel
+1. Spawn child processes that execute reducer using exec
+1. Wait for all child processes to complete after reducer child processes are 
+   created
+1. Added Error handling for failed child process creation
+1. Update README
+   1. Added name to team member names and x500
+   1. Project Purpose
+   1. Added to Assumptions
+   
