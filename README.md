@@ -53,7 +53,12 @@ in input File is the middle of a word.
 1. Wait for all child processes to complete after reducer child processes are 
    created
 1. Added Error handling for failed child process creation
-1. Update README
+1. Added Comments
+1. Added input validation
+   1. Check for nMappers > 0
+   1. Check for nReducers >0
+   1. Check for read/write access to file given
+Update README
    1. Added name to team member names and x500
    1. Project Purpose
    1. Added to Assumptions
