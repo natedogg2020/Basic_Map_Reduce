@@ -8,10 +8,33 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 
+
 	// ###### DO NOT REMOVE ######
 	int nMappers 	= strtol(argv[1], NULL, 10);
 	int nReducers 	= strtol(argv[2], NULL, 10);
 	char *inputFile = argv[3];
+
+	// ###Further check for proper arguments###
+	//Is nMappers > 0?
+	if(nMappers <= 0){
+		printf("Number of mappers must be greater than 0.\n");
+		exit(0);
+	}
+	// Is nReducers >0?
+	if(nReducers <= 0){
+		printf("Number of reducers must be greater than 0.\n");
+		exit(0);
+	}
+	// Is nMappers > nReducers?
+	if(nMappers < nReducers){
+		printf("Number of reducers must be LESS than number of mappers.\n");
+		exit(0);
+	}
+	// Do we have full read/write access to files?
+	if(access(inputFile,(R_OK | W_OK)) != 0){
+		printf("The filepath: %s does not work. Does it exist with proper access?\n", inputFile);
+		exit(0);
+	}
 
 	// ###### DO NOT REMOVE ######
 	bookeepingCode();
@@ -25,19 +48,28 @@ int main(int argc, char *argv[]) {
 	}
 	sleep(1);
 
+
+	
+
 	// To do
 	// spawn mappers processes and run 'mapper' executable using exec
+	int mapperStatus = 0; //Status for mapper processes
 	for(int i=1; i<= nMappers; i++) {
-		pid = fork();
+		pid = fork(); //clone to child process using fork
+
+		//Make sure child process creation didn't fail
 		if(pid < 0){
 			printf("Error: Could not create the %d mapper child process", i);
 		}
-		else if(pid == 0) {
+		//We are a child process, so exec mapper
+		else if(pid == 0) { 
 			char id[1024];
 			sprintf(id, "%d", i);
 			char *mapperArgs[] = {"mapper", id,NULL};
 			char *mapperCmd = "mapper";
     		execv(mapperCmd,mapperArgs);
+    		// exec has 'continue;' style end, so we get here upon exec failure
+    		// Send error if exec isn't successful
 			printf("Error: Could not execute the mapper processes");
 			exit(0);
 		}
@@ -45,7 +77,6 @@ int main(int argc, char *argv[]) {
 
 	// To do
 	// wait for all children to complete execution
-	int mapperStatus = 0;
     while (wait(&mapperStatus) > 0);
 
 	// ###### DO NOT REMOVE ######
@@ -61,20 +92,25 @@ int main(int argc, char *argv[]) {
 
 	// To do
 	// spawn reducer processes and run 'reducer' executable using exec
-	int reducerStatus;
+	int reducerStatus; //Satus for reducer processes
 	for(int i = 1; i <= nReducers;i++){
-		pid = fork();
+		pid = fork(); //clone to child process using fork
+
+		//Make sure child process creation didn't fail
 		if(pid < 0){
 			printf("Error: Could not create the %d reducer child process", i);
 		}
+		//We are a child process, so exec reducer
 		else if(pid == 0){
 			char num[1024];
 			sprintf(num, "%d", i);
 			char *args[] = {"./reducer",num, NULL};
     		execv(*args, args);
+    		// exec has 'continue;' style end, so we get here upon exec failure
+    		// Send error if exec isn't successful
 			printf("Error: Could not execute the reducer processes");
     		exit(0);	
-    		}
+		}	
 	}
 
 	// To do

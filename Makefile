@@ -25,3 +25,9 @@ t1:
 clean:
 	rm mapreduce mapper reducer
 	rm -rf output
+
+valt1:
+	chmod +x mapreduce
+	chmod +x mapper
+	chmod +x reducer
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes ./mapreduce 5 2 test/T1/F1.txt
