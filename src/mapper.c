@@ -105,7 +105,7 @@ void writeIntermediateDS() {
 	// Setup file writing
 	FILE* outputFd;
 	char* filepath;
-	int pathLength = 50; //assumptions: maximum size of a file path to be 50 bytes
+	int pathLength = 50; //assumptions: maximum size of a file path to be 50 bytes per writeup
 	int createdPathLength = 0;
 	
 
@@ -124,8 +124,8 @@ void writeIntermediateDS() {
 			exit(0);
 		}
 
-		if((outputFd = fopen(filepath, "w")) == NULL){
-			printf("Could not open file");
+		if((outputFd = fopen(filepath, "w+")) == NULL){
+			printf("Could not open file: %s", filepath);
 			exit(0);
 		}
 
