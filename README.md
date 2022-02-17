@@ -42,6 +42,8 @@ in input File is the middle of a word.
 ### Abdul
 - spawn mappers processes and run 'mapper' executable using exec
 - wait for all children to complete execution
+- Added github actions to autobuild project
+- Implemented Reducer phase
 - Update Readme
    - How to compile the program
    - Any assumptions outside this document

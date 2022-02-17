@@ -1,5 +1,8 @@
 #include "reducer.h"
 
+// Instance variable to keep track of root node.
+finalKeyValueDS *DS;
+
 // create a key value node
 finalKeyValueDS *createFinalKeyValueNode(char *word, int count){
 	finalKeyValueDS *newNode = (finalKeyValueDS *)malloc (sizeof(finalKeyValueDS));
@@ -43,13 +46,67 @@ void freeFinalDS(finalKeyValueDS *root) {
 
 // reduce function
 void reduce(char *key) {
+	// setup to read words and counts
+	int wordCount =0; // Counts 1's after word
+	char word[MAXKEYSZ]; // Word is stored here
+	int numb; // Temp variable for scannning 1s
+	FILE *inputfd; // File input
+	
+	// Open file
+	inputfd = fopen(key, "r");
+	// Exit and print error if unable to open file
+	if(inputfd == NULL){
+		printf("Error: Unable to open map file %s", key);
+		exit(0);
+	}
 
+	// Fetch word
+	fscanf(inputfd, "%s", word);
+	
+	// Loop until end of file and count 1's
+	while(fscanf(inputfd, "%d", &numb) != EOF){
+		wordCount++;
+	}
+
+	// Close file
+	fclose(inputfd);
+
+    // //update the node with new word count
+    DS = insertNewKeyValue(DS, word, wordCount);
 }
 
 // write the contents of the final intermediate structure
 // to output/ReduceOut/Reduce_reducerID.txt
 void writeFinalDS(int reducerID){
+	// Setup file and filepath needed to create files
+	FILE *outputFd;
+	char filepath[MAXKEYSZ];
+
+	// Create temp pointer to root node in tree
+	finalKeyValueDS* tempDS = DS;
+
+	// Update file name given the reducerID
+	sprintf(filepath, "./output/ReduceOut/Reducer_%d.txt", reducerID);
 	
+	// Opening file, and printing error if unable to open/create file 
+	outputFd = fopen(filepath, "w");
+	if(outputFd == NULL){
+		printf("Error: Unable to open reducer file %s", filepath);
+		exit(0);
+	}
+
+	// loop through tree and write to reducer files
+	while(tempDS != NULL)
+    {
+        // write the word and it's count value then move to next pointer.
+        fprintf(outputFd, "%s %d\n", tempDS -> key, tempDS -> value);
+        tempDS = tempDS -> next;
+    }
+
+	// Close file and free pointers
+    fclose(outputFd);
+    freeFinalDS(tempDS);
+	freeFinalDS(DS);
 }
 
 int main(int argc, char *argv[]) {
