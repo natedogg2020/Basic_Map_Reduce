@@ -57,6 +57,8 @@ in input File is the middle of a word.
    - Contribution by each member of the team
 
 ### Nathaniel
+1. Implemented Mapper phase
+1. Added in test cases for testing within Makefile
 1. Spawn child processes that execute reducer using exec
 1. Wait for all child processes to complete after reducer child processes are 
    created

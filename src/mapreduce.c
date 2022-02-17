@@ -48,9 +48,6 @@ int main(int argc, char *argv[]) {
 	}
 	sleep(1);
 
-
-	
-
 	// To do
 	// spawn mappers processes and run 'mapper' executable using exec
 	int mapperStatus = 0; //Status for mapper processes
@@ -88,7 +85,6 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 	sleep(1);
-
 
 	// To do
 	// spawn reducer processes and run 'reducer' executable using exec

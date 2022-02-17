@@ -99,10 +99,18 @@ void writeFinalDS(int reducerID){
 	while(tempDS != NULL)
     {
         // write the word and it's count value then move to next pointer.
-        fprintf(outputFd, "%s %d\n", tempDS -> key, tempDS -> value);
+		if(fprintf(outputFd, "%s %d\n", tempDS->key, tempDS->value) < 0){
+			printf("Error writing key: %s value: %d to file: %s\n", tempDS->key, tempDS->value, filepath);
+			exit(0);
+		}
         tempDS = tempDS -> next;
     }
 
+	// Make sure no errors have occured while writing
+	if(ferror(outputFd)){
+		printf("Error writing to file: %s", filepath);
+		exit(0);
+	}
 	// Close file and free pointers
     fclose(outputFd);
     freeFinalDS(tempDS);
@@ -121,7 +129,7 @@ int main(int argc, char *argv[]) {
 	int reducerID = strtol(argv[1], NULL, 10);
 
     //Print statement for reducer, comment this for final submission
-    printf("Reducer id : %d \n",reducerID);
+    // printf("Reducer id : %d \n",reducerID);
 
 	// ###### DO NOT REMOVE ######
 	// master will continuously send the word.txt files
