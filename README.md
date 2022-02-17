@@ -1,3 +1,8 @@
+test machine: csel-kh1250-26
+Date: 02/17/2022
+name: Abdullahi Farah, Nathaniel Mckelvey
+X500: farah126, mckel042
+
 # Project 1: Basic Map Reduce
 ## Project Purpose
 The purpose of this project is to find the number of occurrences a given word may have within a text document. This action can take a while, but this project uses mapping/reducing methods that splits this task into multiple processes to run. This method increases speed at the cost of memory usage.
