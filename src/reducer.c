@@ -81,8 +81,6 @@ void writeFinalDS(int reducerID){
 	// Setup file and filepath needed to create files
 	FILE *outputFd;
 	char filepath[MAXKEYSZ];
-	int pathLength = 50;
-	int createdPathLength = 0;
 
 	// Create temp pointer to root node in tree
 	finalKeyValueDS* tempDS = DS;
