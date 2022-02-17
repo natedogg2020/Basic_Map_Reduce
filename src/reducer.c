@@ -1,5 +1,6 @@
 #include "reducer.h"
 
+// Instance variable to keep track of root node.
 finalKeyValueDS *DS;
 
 // create a key value node
