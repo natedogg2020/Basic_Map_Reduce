@@ -25,8 +25,8 @@ jobs:
     # Cleans workspace
     - name: Cleanup Gradle Cache
       run: make clean
-    - name: make t1
-      run: make t1
+    - name: make t5 (Normal Case)
+      run: make t5
     - uses: actions/upload-artifact@v2
       with:
         name: output
