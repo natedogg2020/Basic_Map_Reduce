@@ -1,5 +1,7 @@
 #include "mapper.h"
 
+intermediateDS *DS = NULL;
+
 // combined value list corresponding to a word <1,1,1,1....>
 valueList *createNewValueListNode(char *value){
 	valueList *newNode = (valueList *)malloc (sizeof(valueList));
@@ -77,20 +79,90 @@ void freeInterDS(intermediateDS *root) {
 
 // emit the <key, value> into intermediate DS 
 void emit(char *key, char *value) {
-
+	DS = insertPairToInterDS(DS, key, value);
 }
 
 // map function
 void map(char *chunkData){
-	
 	// you can use getWord to retrieve words from the 
 	// chunkData one by one. Example usage in utils.h
+	int i = 0;
+	char *buffer;
+	while ((buffer = getWord(chunkData, &i)) != NULL){
+		emit(buffer, "1");
+		free(buffer);
+	}
 }
 
 // write intermediate data to separate word.txt files
 // Each file will have only one line : word 1 1 1 1 1 ...
 void writeIntermediateDS() {
+	// Make sure DS has been utilized
+	if(DS == NULL){
+		printf("Mapper's intermediate DS was never used!");
+	}
 	
+	// Setup file writing
+	FILE* outputFd;
+	char* filepath;
+	int pathLength = 50; //assumptions: maximum size of a file path to be 50 bytes per writeup
+	int createdPathLength = 0;
+	
+
+	intermediateDS* tempDS = DS;
+	valueList*		tempVal;
+
+	// Loop through all DS in linked list
+	while(tempDS != NULL){
+		filepath = (char*) malloc(pathLength * sizeof(char));
+		//Create filepath for current word
+		createdPathLength = snprintf(filepath, pathLength, "%s/%s.txt", mapOutDir, tempDS->key);
+
+		//Make sure filepath wasn't written longer than intended
+		if(createdPathLength >= pathLength){
+			printf("Error, path length mismatch! Your filepath may be too long.");
+			exit(0);
+		}
+
+		if((outputFd = fopen(filepath, "w+")) == NULL){
+			printf("Could not open file: %s", filepath);
+			exit(0);
+		}
+
+		fputs(tempDS->key, outputFd); // Write CurrentWord into file
+		if(ferror(outputFd)){
+			printf("Error writing value: %s to file: %s", tempDS->key, filepath);
+		}
+		tempVal = tempDS->value; // Set val List as tempDS value root
+		
+		//Write all values except last into file
+		while(tempVal->next != NULL){
+			if(fprintf(outputFd, " %s", tempVal->value) < 0){
+				printf("Error writing value: %s to file: %s", tempVal->value, filepath);
+				exit(0);
+			}
+			
+			tempVal = tempVal->next;
+		}
+		//Write last value into file
+		if(fprintf(outputFd, " %s\n",tempVal->value ) < 0){
+			printf("Error writing value: %s\"n to file: %s", tempVal->value, filepath);
+			exit(0);
+		}
+		// Make sure no errors have occured while writing
+		if(ferror(outputFd)){
+			printf("Error writing to file: %s", filepath);
+			exit(0);
+		}
+		
+		tempDS = tempDS->next;
+	}
+
+	// Free data
+	free(filepath);
+	freeInterDS(tempDS);
+	freeInterDS(DS);
+	fclose(outputFd);
 }
 
 int main(int argc, char *argv[]) {
