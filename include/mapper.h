@@ -6,6 +6,7 @@
 // ###### DO NOT REMOVE ######
 #define MAXKEYSZ 100
 #define MAXVALUESZ 100
+#define MAXFILELEN 50
 
 // ###### DO NOT REMOVE ######
 char *mapOutDir;

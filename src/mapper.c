@@ -106,7 +106,7 @@ void writeIntermediateDS() {
 	// Setup file writing
 	FILE* outputFd;
 	char* filepath;
-	int pathLength = 50; //assumptions: maximum size of a file path to be 50 bytes per writeup
+	int pathLength = MAXFILELEN; //assumptions: maximum size of a file path to be 50 bytes per writeup
 	int createdPathLength = 0;
 	
 
