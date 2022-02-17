@@ -1,5 +1,6 @@
 #include "mapper.h"
 
+// Instance variable to keep track of root node.
 intermediateDS *DS = NULL;
 
 // combined value list corresponding to a word <1,1,1,1....>
